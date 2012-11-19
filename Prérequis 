@@ -1,1 +1,11 @@
 Prérequis : 
+
+
+gawk       -    subversion "
+make       -    build-essential "
+texinfo    -    MPC "
+autoconf   -    MPFR "
+bison      -    GMP "
+libppl-dev -    libcloog-ppl-dev "
+ppl-dev    -    cloog-ppl "
+Perl5      -    gettext 
