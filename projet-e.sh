@@ -14,7 +14,7 @@ echo ""
 
 echo -e "Bienvenue à toi $VERT $LOGNAME $NORMAL dans l'outil de génération d'une cross-tool chain" 
 
-while [ $reponse -ne 10 ]
+while :
  	do 
 	
 echo ""
@@ -39,25 +39,67 @@ echo ""
 case $reponse in
 
 1) 
-echo -e "    $CYAN     ------------ Préambule -------------    $NORMAL  "
+echo -e "    $CYAN         ------------ Préambule -------------    $NORMAL  "
 echo ""
-echo " Prérequis pour le bon fonctionnement de la génération de la cross-tool "
+echo " ----> Pré-requis pour le bon fonctionnement de la génération de la cross-tool "
 echo ""
-echo " gawk       -    subversion "
-echo " make       -    build-essential "
-echo " texinfo    -    MPC "
-echo " autoconf   -    MPFR "
-echo " bison      -    GMP "
-echo " libppl-dev -    libcloog-ppl-dev "
-echo " ppl-dev    -    cloog-ppl "
-echo " Perl5      -    gettext "
-echo " sed        -    gperf "
+echo -e " ----> Rendez-vous la page $CYAN https://github.com/texierp/TP-LINUX$NORMAL"
 echo ""
-echo " Stoppez le programme ( ctrl+c ) pour vérifier l'installantion de tout les paquets "
-echo " Passez ensuite en root ( super-utilisateur ) "
-echo ""
-echo  -e " $ROUGE Puis tapez la commande suivante : aptitude install 'nom du paquet' $NORMAL"
+echo  -e " $ROUGE----> Pour installer un paquet manuellement : su -c 'aptitude install nom du paquet' $NORMAL"
 
+rep=0
+while [ $rep -ne 2 ]
+ 	do 
+	
+echo ""
+echo -e "      ______________________________________________________________"
+echo -e""
+echo -e "	| $CYAN 1-$NORMAL	Faire l'installation des paquets automatiquement |"
+echo -e "	| $CYAN 2-$NORMAL	Quitter et le faire en manuel			 |"
+echo -e "      ______________________________________________________________"
+echo -e "\n"
+echo -e "\n"
+echo -ne "$CYAN Choix n° : $NORMAL "
+read rep
+echo ""
+case $rep in
+
+1)
+su -c 'aptitude -y install gawk'
+su -c 'aptitude -y install libppl-dev'
+su -c 'aptitude -y install bison'
+su -c 'aptitude -y install libmpc-dev'
+su -c 'aptitude -y install make'
+su -c 'aptitude -y install build-essential'
+su -c 'aptitude -y install libsvn-dev'
+su -c 'aptitude -y install flex'
+su -c 'aptitude -y install libmpfr-dev'
+su -c 'aptitude -y install lib32mpfr4'
+su -c 'aptitude -y install libgmp-dev'
+su -c 'aptitude -y install ppl'
+su -c 'aptitude -y install m4'
+su -c 'aptitude -y install autogen'
+su -c 'aptitude -y install subversion'
+su -c 'aptitude -y install texinfo'
+su -c 'aptitude -y install diffutils'
+su -c 'aptitude -y install autoconf'
+su -c 'aptitude -y install makeinfo'
+su -c 'aptitude -y install cloog-ppl'
+su -c 'aptitude -y install libcloog-ppl-dev'
+su -c 'aptitude -y install pkg-config'
+su -c 'aptitude -y install dconf-tools'
+su -c 'aptitude -y install libpthread-stub0-dev'
+su -c 'aptitude -y install libevent-pthreads-2.0-5'
+su -c 'aptitude -y install pthread'
+su -c 'aptitude -y install libqt4-dev'
+su -c 'aptitude -y install gperf'
+su -c 'aptitude -y install libpthread-workqueue-dev'
+;;
+2)
+	exit 0;;
+esac
+done
+	         
 ;; 
 
 2)
@@ -126,22 +168,10 @@ echo -e " -GCC"
 echo -e " -Le KERNEL"
 echo -e " -Binutils$NORMAL"
 
-cd $SRCDIR
-
-aptitude search subversion | awk '{ print $1,$2,$4 }'| grep -E "e$"
 
 echo ""
 echo "*****************************************************************"
-
-if [ $1 =="i" ]    # On test
-	then
-	echo "Le paquet : Subversion est bien installé"
-elif [ $1 =="p"  ]
- 	then 
-  	echo " il faut installer Subversion "
-	sudo apt-get install subversion
-fi
-
+cd $SRCDIR
 svn co http://www.eglibc.org/svn/branches/eglibc-2_16 eglibc-2.16    # On récupére la branche eGlibC 2.16
 cd eglibc-2.16							     # On copie le fichier ports/ dans libc/
 cp -R ports/ libc/			
@@ -163,17 +193,17 @@ echo ""
 ################### On redescent pour décompresser les sources ############
 
 #------------------------------------------------------------
-tar xjf $BINUTILS.tar.bz2    
+tar xvjf $BINUTILS.tar.bz2    
 echo -e " $VERT-Extraction BINUTILS réussi$NORMAL" 
 mv $BINUTILS ../
 echo -e " $VERT-Déplacement du dossier réussi$NORMAL" 
 #------------------------------------------------------------
-tar xjf $KERNEL.tar.bz2 
+tar xvjf $KERNEL.tar.bz2 
 echo -e " $VERT-Extraction KERNEL réussi$NORMAL" 
 mv $KERNEL ../
 echo -e " $VERT-Déplacement du dossier réussi$NORMAL" 
 #-----------------------------------------------------------
-tar xjf $GCC.tar.bz2 
+tar xvjf $GCC.tar.bz2 
 echo -e " $VERT-Extraction GCC réussi$NORMAL" 
 mv $GCC ../
 echo -e " $VERT-Déplacement du dossier réussi$NORMAL" 
@@ -239,14 +269,16 @@ cd $BUILDDIR/gcc-bootstrap
 	--enable-bootstrap \
 	--enable-languages=c \
 	--disable-threads \
-	--with-sysroot=$SYSROOTDIR \
 	--enable-__cxa-atexit \
 	--disable-libmudflap \
+	--with-gnu-as \
+	--with-gnu-ld \
 	--with-newlib \
 	--disable-libssp \
 	--disable-libgomp \
 	--disable-nls \
-	--disable-shared 	
+	--disable-shared
+ 	
 echo -e "  $VERT Exit retourné $NORMAL ---> "$? 
 make all-gcc install-gcc 
 make all-target-libgcc install-target-libgcc 
@@ -335,6 +367,11 @@ echo "libc_cv_c_cleanup=yes" >> config.cache
 	--disable-sjlj-exceptions \
 	--disable-nls \
 	--enable-threads=posix \
+	--disable-libmudflap \
+	--disable-libssp \
+	--with-gnu-as \
+	--with-gnu-ld \
+	--disable-multilib \
 	--enable-long-longx	
 
 echo -e "  $VERT Exit retourné $NORMAL ---> "$?  		
@@ -348,8 +385,9 @@ echo -e "  $VERT Exit retourné $NORMAL ---> "$?
 cd
 cd eGcross/
 mkdir programme && cd programme 
-cat > hello_world_arm.c <<EOF \
-#include <stdio.h> 
+cat > hello_world_arm.c <<EOF
+ 
+#include<stdio.h> 
 
 int main(void)
 {
@@ -360,7 +398,7 @@ int main(void)
 
 EOF
 
-arm-none-linux-gnueabi-gcc -o hello_world_arm hello_world.c 
+arm-none-linux-gnueabi-gcc -o hello_world_arm hello_world_arm.c 
 
 ;;
 
