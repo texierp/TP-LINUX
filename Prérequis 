@@ -1,11 +1,4 @@
 Prérequis : 
 
 
-gawk       -    subversion "
-make       -    build-essential "
-texinfo    -    MPC "
-autoconf   -    MPFR "
-bison      -    GMP "
-libppl-dev -    libcloog-ppl-dev "
-ppl-dev    -    cloog-ppl "
-Perl5      -    gettext 
+•	libmpc-dev•	libcloog-ppl-dev•	bison•	gawk•	make•	build-essential•	libsvn-dev•	flex•	libmpfr-dev•	lib32mpfr4•	libgmp-dev•	ppl•	m4•	autogen•	subversion•	texinfo•	diffutils•	autoconf•	makeinfo•	cloog-ppl•	ppl-dev•	libppl-dev•	pkg-config•	dconf-tools•	libpthread-stub0-dev•	libevent-pthreads-2.0-5•	pthread•	libqt4-dev•	gperf 
