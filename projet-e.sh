@@ -9,18 +9,19 @@ KERNEL="linux-3.5.3"
 GCC="gcc-4.7.2"
 
 reponse=0
+clear
 echo ""
 echo ""
-
+echo "*************************************************************************"
 echo -e "Bienvenue à toi $VERT $LOGNAME $NORMAL dans l'outil de génération d'une cross-tool chain" 
-
-while :
+echo "*************************************************************************"
+while [ $reponse -ne 11 ]
  	do 
 	
 echo ""
 echo -e "      ______________________________________________________________"
 echo -e""
-echo -e "	| $CYAN 1-$NORMAL	RTFM $VERT(Obligatoire)$NORMAL			|"
+echo -e "	| $CYAN 1-$NORMAL	RTFM $VERT(Obligatoire)$NORMAL				|"
 echo -e "	| $CYAN 2-$NORMAL	Construction de l'arborescence			|"
 echo -e "	| $CYAN 3-$NORMAL	Téléchargement des archives			|"
 echo -e "	| $CYAN 4-$NORMAL	Décompresser les Archives			|"
@@ -38,12 +39,13 @@ read reponse
 echo ""
 case $reponse in
 
-1) 
-echo -e "    $CYAN         ------------ Préambule -------------    $NORMAL  "
+1)
+clear
+echo -e "    $CYAN         ------------ Sous Menu Préambule -------------    $NORMAL  "
 echo ""
 echo " ----> Pré-requis pour le bon fonctionnement de la génération de la cross-tool "
 echo ""
-echo -e " ----> Rendez-vous la page $CYAN https://github.com/texierp/TP-LINUX$NORMAL"
+echo -e " ----> Rendez-vous sur la page $CYAN https://github.com/texierp/TP-LINUX$NORMAL"
 echo ""
 echo  -e " $ROUGE----> Pour installer un paquet manuellement : su -c 'aptitude install nom du paquet' $NORMAL"
 
@@ -52,48 +54,24 @@ while [ $rep -ne 2 ]
  	do 
 	
 echo ""
-echo -e "      ______________________________________________________________"
+echo -e "      ______________________________________________________________________________________________"
 echo -e""
-echo -e "	| $CYAN 1-$NORMAL	Faire l'installation des paquets automatiquement |"
-echo -e "	| $CYAN 2-$NORMAL	Quitter et le faire en manuel			 |"
-echo -e "      ______________________________________________________________"
+echo -e "	| $CYAN 1-$NORMAL	Je suis débutant je préfére générer l'installation des paquets :)|"
+echo -e "	| $CYAN 2-$NORMAL	Je suis expert LINUX je vais le faire moi meme :) je tape ctrl+c |"
+echo -e "      ______________________________________________________________________________________________"
 echo -e "\n"
 echo -e "\n"
-echo -ne "$CYAN Choix n° : $NORMAL "
+echo -ne "$CYAN Entrez votre Choix ---> n° : $NORMAL "
 read rep
 echo ""
 case $rep in
 
 1)
-su -c 'aptitude -y install gawk'
-su -c 'aptitude -y install libppl-dev'
-su -c 'aptitude -y install bison'
-su -c 'aptitude -y install libmpc-dev'
-su -c 'aptitude -y install make'
-su -c 'aptitude -y install build-essential'
-su -c 'aptitude -y install libsvn-dev'
-su -c 'aptitude -y install flex'
-su -c 'aptitude -y install libmpfr-dev'
-su -c 'aptitude -y install lib32mpfr4'
-su -c 'aptitude -y install libgmp-dev'
-su -c 'aptitude -y install ppl'
-su -c 'aptitude -y install m4'
-su -c 'aptitude -y install autogen'
-su -c 'aptitude -y install subversion'
-su -c 'aptitude -y install texinfo'
-su -c 'aptitude -y install diffutils'
-su -c 'aptitude -y install autoconf'
-su -c 'aptitude -y install makeinfo'
-su -c 'aptitude -y install cloog-ppl'
-su -c 'aptitude -y install libcloog-ppl-dev'
-su -c 'aptitude -y install pkg-config'
-su -c 'aptitude -y install dconf-tools'
-su -c 'aptitude -y install libpthread-stub0-dev'
-su -c 'aptitude -y install libevent-pthreads-2.0-5'
-su -c 'aptitude -y install pthread'
-su -c 'aptitude -y install libqt4-dev'
-su -c 'aptitude -y install gperf'
-su -c 'aptitude -y install libpthread-workqueue-dev'
+#--------------------------------------------#
+#         Installation des Paquets           #
+#--------------------------------------------#
+
+su -c 'aptitude -y install gawk libppl-dev bison libmpc-dev make build-essential libsvn-dev flex libmpfr-dev lib32mpfr4 libgmp-dev ppl m4 autogen subversion texinfo diffutils autoconf makeinfo cloog-ppl libcloog-ppl-dev pkg-config dconf-tools libpthread-stub0-dev libevent-pthreads-2.0-5 pthread libqt4-dev gperf libpthread-workqueue-dev'
 ;;
 2)
 	exit 0;;
@@ -103,10 +81,6 @@ done
 ;; 
 
 2)
-echo   "#########################################################################"
-
-echo -e "1) La premiére étape est de créer une arborescence comme ceci : " 
-
 echo ""
 echo ""
 echo "|-----------------------------------------------------|"
@@ -117,9 +91,9 @@ echo "|-----------------------------------------------------|"
 
 echo ""
 echo ""
-############################################################################
-
-# On crée les dossiers
+#--------------------------------------------#
+#         On crée donc l'arborescence        #
+#--------------------------------------------#
 
 if [ -d eGcross ]    # On test
 then
@@ -139,11 +113,11 @@ echo "L'arborescence vient d'etre crée !!!! On peut commencer à travailler "
 echo $LOGNAME
 
 
-# On définie les variables dans le shell courant
+#--------------------------------------------#
+#  On définie les variables d'environnement  #
+#--------------------------------------------#
 
 cd $HOME 
-echo ""
-echo ""
 echo "############ export des variables d'environnement ########## "  
 export THREADS=$(egrep -c 'processor' /proc/cpuinfo) 	       # Nombres de THREADS
 export DUMP=$(gcc -dumpmachine)				       # Nom de la machine
@@ -153,10 +127,8 @@ export TARGET=arm-none-linux-gnueabi			       # ARCH Target
 export BUILD=$DUMP			              	       # Arch build 
 export INSTALLDIR=$HOME/eGcross/arm		      	       # Dossier contenant la Cross 
 export SYSROOTDIR=$HOME/eGcross/arm/sysroot		       # Dossier lib et header 
-
 echo ""
 echo ""
-
 ;;
 
 3)
@@ -168,9 +140,11 @@ echo -e " -GCC"
 echo -e " -Le KERNEL"
 echo -e " -Binutils$NORMAL"
 
+#--------------------------------------------------#
+#  Télechargement des archives et source (eGlibC)  #
+#--------------------------------------------------#
 
 echo ""
-echo "*****************************************************************"
 cd $SRCDIR
 svn co http://www.eglibc.org/svn/branches/eglibc-2_16 eglibc-2.16    # On récupére la branche eGlibC 2.16
 cd eglibc-2.16							     # On copie le fichier ports/ dans libc/
@@ -190,7 +164,9 @@ echo ""
 ;;
 
 4)
-################### On redescent pour décompresser les sources ############
+#---------------------------#
+#      On décompresse       #
+#---------------------------#
 
 #------------------------------------------------------------
 tar xvjf $BINUTILS.tar.bz2    
@@ -220,8 +196,9 @@ fi
 ;;
 
 5)
-############# Compilation des sources ####################
-
+#---------------------------#
+#  Compilation des sources  #
+#---------------------------#
 # BINUTILS
 cd ..
 cd build
@@ -233,7 +210,8 @@ echo -e " $VERT-Compilation BINUTILS$NORMAL"
 	--build=$BUILD \
 	--target=$TARGET \
 	--with-sysroot=$SYSROOTDIR \
-	--prefix=$INSTALLDIR 			
+	--prefix=$INSTALLDIR 
+			
 echo -e "  $VERT Exit retourné $NORMAL ---> "$? 
 make -j $THREADS
 echo -e "  $VERT Exit retourné $NORMAL ---> "$? 
@@ -244,19 +222,21 @@ echo -e " $VERT-Compilation BINUTILS réussi $NORMAL"
 
 
 6)
+# KERNEL
 cd $SRCDIR/$KERNEL
 make mrproper
 make ARCH=arm integrator_defconfig
 echo -e "  $VERT Exit retourné $NORMAL ---> "$? 
 make ARCH=arm headers_check
 echo -e "  $VERT Exit retourné $NORMAL ---> "$? 
-make ARCH=arm INSTALL_HDR_PATH=$INSTALLDIR/sysroot/usr headers_install 
+make ARCH=arm INSTALL_HDR_PATH=$INSTALLDIR/sysroot/usr headers_install
+echo -e "  $VERT Exit retourné $NORMAL ---> "$?  
 echo -e " $VERT-Compilation KERNEL réussi $NORMAL" 
-echo -e "  $VERT Exit retourné $NORMAL ---> "$? 
 ;;
 
 
 7)
+# GCC-minimaliste
 mkdir $BUILDDIR/gcc-bootstrap 
 cd $BUILDDIR/gcc-bootstrap
 
@@ -280,14 +260,17 @@ cd $BUILDDIR/gcc-bootstrap
 	--disable-shared
  	
 echo -e "  $VERT Exit retourné $NORMAL ---> "$? 
-make all-gcc install-gcc 
-make all-target-libgcc install-target-libgcc 
+make all-gcc install-gcc			# Cette commande précédente crée le compilateur de base et l'installe dans le répertoire  $INSTALLDIR
+echo -e "  $VERT Exit retourné $NORMAL ---> "$?  	
+make all-target-libgcc install-target-libgcc	# Nous lançons à présent la construction d'une bibliothèque de base utilisée par GCC pour produire du code
+echo -e "  $VERT Exit retourné $NORMAL ---> "$?  	
 echo -e " $VERT-Compilation GCC-bootstrap réussi $NORMAL" 
 ln -s $INSTALLDIR/lib/gcc/arm-none-linux-gnueabi/4.7.2/libgcc.a $INSTALLDIR/lib/gcc/arm-none-linux-gnueabi/4.7.2/libgcc_sh.a 
 ;;
 
 
 8)
+# en-tete eglibc
 export CROSS=arm-none-linux-gnueabi
 export CC=${CROSS}-gcc                          	 
 export LD=${CROSS}-ld
@@ -308,17 +291,18 @@ echo "libc_cv_c_cleanup=yes" >> config.cache
 	--config-cache \
 	--enable-kernel=3.5.3 \
         --disable-profile --without-gd --without-cvs --enable-add-ons=ports,nptl 
-echo -e "  $VERT Exit retourné $NORMAL ---> "$?  
-			
+
+echo -e "  $VERT Exit retourné $NORMAL ---> "$?  			
 make -k install-headers cross_compiling=yes install_root=$SYSROOTDIR
+echo -e "  $VERT Exit retourné $NORMAL ---> "$? 
 ln -s $INSTALLDIR/lib/gcc/arm-none-linux-gnueabi/4.7.2/libgcc.a $INSTALLDIR/lib/gcc/arm-none-linux-gnueabi/4.7.2/libgcc_eh.a 
 ln -s $INSTALLDIR/lib/gcc/arm-none-linux-gnueabi/4.7.2/libgcc.a $INSTALLDIR/lib/gcc/arm-none-linux-gnueabi/4.7.2/libgcc_s.a 
-echo -e " $VERT-Compilation en-tete eglibc réussi $NORMAL"
-echo -e "  $VERT Exit retourné $NORMAL ---> "$?  
+echo -e " $VERT-Compilation en-tete eglibc réussi $NORMAL" 
 ;;
 
 
 9)
+# eglibc
 mkdir $BUILDDIR/eglibc
 cd $BUILDDIR/eglibc
 echo "libc_cv_forced_unwind=yes" > config.cache
@@ -331,10 +315,12 @@ echo "libc_cv_c_cleanup=yes" >> config.cache
 	--config-cache \
 	--enable-kernel=3.5.3 \
      	--disable-profile --without-gd --without-cvs --enable-add-ons=ports,nptl --with-tls
-echo -e "  $VERT Exit retourné $NORMAL ---> "$?  
-		
-make -k install-headers cross_compiling=yes install_root=$SYSROOTDIR	
+
+echo -e "  $VERT Exit retourné $NORMAL ---> "$?  		
+make -k install-headers cross_compiling=yes install_root=$SYSROOTDIR
+echo -e "  $VERT Exit retourné $NORMAL ---> "$? 	
 make -j$THREADS
+echo -e "  $VERT Exit retourné $NORMAL ---> "$? 
 make install_root=$SYSROOTDIR install
 echo -e "  $VERT Exit retourné $NORMAL ---> "$?  
 echo -e " $VERT-Compilation eglibc réussi $NORMAL"
@@ -350,7 +336,7 @@ unset LD
 unset AR
 unset AS
 
-# GCC
+# GCC FINAL
 
 mkdir $BUILDDIR/gcc
 cd $BUILDDIR/gcc
@@ -376,12 +362,17 @@ echo "libc_cv_c_cleanup=yes" >> config.cache
 
 echo -e "  $VERT Exit retourné $NORMAL ---> "$?  		
 make all-gcc
+echo -e "  $VERT Exit retourné $NORMAL ---> "$? 
 make install-gcc
-echo -e " $VERT-Compilation gcc réussi $NORMAL"
 echo -e "  $VERT Exit retourné $NORMAL ---> "$?
+echo -e " $VERT-Compilation gcc réussi $NORMAL"
+
 ;;
 
 11)
+#-------------------------------------------#
+#  Génération automatique d'un hello world  #
+#-------------------------------------------#
 cd
 cd eGcross/
 mkdir programme && cd programme 
