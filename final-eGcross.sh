@@ -147,10 +147,9 @@ echo -e " -Binutils$NORMAL"
 echo ""
 cd $SRCDIR
 svn co http://www.eglibc.org/svn/branches/eglibc-2_16 eglibc-2.16    # On récupére la branche eGlibC 2.16
-					     
-cp -R ports/ libc/			
+					     		
 echo -e "  $VERT Exit retourné $NORMAL "$? 
-cd ..
+
 cd archives
 wget http://ftp.gnu.org/gnu/binutils/$BINUTILS.tar.bz2     
 echo -e " $VERT-Téléchargement BINUTILS terminé$NORMAL" 
@@ -167,7 +166,7 @@ echo ""
 #---------------------------#
 #      On décompresse       #
 #---------------------------#
-
+cd $SRCDIR/archives
 #------------------------------------------------------------
 tar xvjf $BINUTILS.tar.bz2    
 echo -e " $VERT-Extraction BINUTILS réussi$NORMAL" 
@@ -335,8 +334,9 @@ unset CC
 unset LD
 unset AR
 unset AS
+unset RANLIB
 
-# GCC FINAL
+# GCC Statique 
 
 mkdir $BUILDDIR/gcc
 cd $BUILDDIR/gcc
