@@ -1,5 +1,7 @@
 #!/bin/bash 
 
+# TEXIER Pierre-Jean --- Master 1 embedded System
+
 VERT="\033[1;32m" 
 NORMAL="\033[0m"
 ROUGE="\033[1;31m"
